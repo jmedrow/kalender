@@ -1,0 +1,3012 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Wirtschaftskalender der Woche">
+<title>Liberty Wochenkalender</title>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --grund:#FBF8F9; --flaeche:#FFFFFF; --linie:#E7DCE1; --linie-stark:#D3C2CA;
+  --text:#1A1418; --gedaempft:#6E5F67; --leise:#9A8B93;
+  --akzent:#79153B; --akzent-weich:#F2E4EA;
+  --hoch:#1F7A72; --runter:#B4442E; --revidiert:#A9761A;
+  --schatten:0 1px 2px rgba(26,20,24,.06), 0 8px 24px -12px rgba(26,20,24,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grund:#161214; --flaeche:#1E181C; --linie:#2E262B; --linie-stark:#413640;
+    --text:#EFE9EC; --gedaempft:#9B8E95; --leise:#6E626A;
+    --akzent:#C2456E; --akzent-weich:#2A1620;
+    --hoch:#4DA8A0; --runter:#C4553F; --revidiert:#D9A441;
+    --schatten:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --grund:#161214; --flaeche:#1E181C; --linie:#2E262B; --linie-stark:#413640;
+  --text:#EFE9EC; --gedaempft:#9B8E95; --leise:#6E626A;
+  --akzent:#C2456E; --akzent-weich:#2A1620;
+  --hoch:#4DA8A0; --runter:#C4553F; --revidiert:#D9A441;
+  --schatten:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--grund); color:var(--text);
+  font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  font-size:15px; line-height:1.5; -webkit-text-size-adjust:100%;
+}
+.huelle{max-width:1120px; margin:0 auto; padding:20px 14px 72px}
+
+/* ---------- Kopf ---------- */
+.kopf{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 16px; margin-bottom:6px}
+.marke{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--akzent);
+}
+h1{
+  margin:0; font-size:clamp(23px,5.5vw,31px); font-weight:600; letter-spacing:-.02em;
+  text-wrap:balance; flex:1 1 100%;
+}
+.stand{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--leise); margin:2px 0 22px; letter-spacing:.01em;
+}
+.stand b{color:var(--gedaempft); font-weight:500}
+
+/* ---------- Legende ---------- */
+.legende{
+  display:flex; flex-wrap:wrap; gap:6px 18px; padding:11px 14px; margin-bottom:26px;
+  background:var(--flaeche); border:1px solid var(--linie); border-radius:10px;
+  font-size:12.5px; color:var(--gedaempft);
+}
+.legende span{display:inline-flex; align-items:center; gap:7px; white-space:nowrap}
+
+/* ---------- Tag ---------- */
+.tag{
+  position:sticky; top:0; z-index:5; display:flex; align-items:baseline; gap:11px;
+  padding:13px 4px 9px; margin-top:26px;
+  background:linear-gradient(var(--grund) 76%, transparent);
+  border-bottom:1px solid var(--linie-stark);
+}
+.tag::before{content:""; width:3px; height:15px; background:var(--akzent); border-radius:2px}
+.tag h2{margin:0; font-size:15px; font-weight:600; letter-spacing:-.005em}
+.tag .zahl{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; color:var(--leise);
+  margin-left:auto;
+}
+
+/* ---------- Termin ---------- */
+.zeile{
+  display:grid; gap:2px 12px; padding:11px 4px; border-bottom:1px solid var(--linie);
+  grid-template-columns:56px 1fr; grid-template-areas:"zeit kopf" ". werte";
+  align-items:baseline;
+}
+.zeile:last-child{border-bottom:none}
+.zeile.gelaufen{opacity:.62}
+.zeile.jetzt{background:var(--akzent-weich); border-radius:8px; border-bottom-color:transparent}
+
+.zeit{
+  grid-area:zeit; font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:12.5px; color:var(--gedaempft); font-variant-numeric:tabular-nums;
+}
+.terminkopf{grid-area:kopf; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+.waehrung{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; font-weight:600;
+  letter-spacing:.06em; color:var(--gedaempft); white-space:nowrap;
+}
+.name{font-size:14.5px; font-weight:500; letter-spacing:-.004em}
+.punkte{display:inline-flex; gap:2.5px; align-items:center; flex:0 0 auto}
+.punkt{width:5px; height:5px; border-radius:50%; background:var(--linie-stark)}
+.punkt.an{background:var(--akzent)}
+.rede{
+  font-size:10.5px; font-family:"IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.05em; text-transform:uppercase; color:var(--akzent);
+  border:1px solid var(--akzent); border-radius:99px; padding:1px 7px; white-space:nowrap;
+}
+
+.werte{
+  grid-area:werte; display:flex; flex-wrap:wrap; gap:3px 15px; margin-top:3px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px;
+  font-variant-numeric:tabular-nums;
+}
+.wert{display:inline-flex; gap:6px; align-items:baseline; white-space:nowrap}
+.etikett{font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--leise)}
+.v{color:var(--text)}
+.v.hoch{color:var(--hoch); font-weight:600}
+.v.runter{color:var(--runter); font-weight:600}
+.v.rev{color:var(--revidiert)}
+.v.leer{color:var(--leise)}
+.ueber{font-weight:600}
+.ueber.hoch{color:var(--hoch)}
+.ueber.runter{color:var(--runter)}
+.ueber.neutral{color:var(--gedaempft)}
+
+/* ---------- ab Tablet: echte Tabelle ---------- */
+@media (min-width:720px){
+  .zeile{
+    grid-template-columns:58px 190px 1fr repeat(4, 92px);
+    grid-template-areas:"zeit waehrung name ist erw vor ueberr";
+    align-items:center; gap:0 14px; padding:9px 6px;
+  }
+  .terminkopf{display:contents}
+  .waehrung{grid-area:waehrung}
+  .name{grid-area:name}
+  .punkte{position:absolute}
+  .werte{display:contents}
+  .wert{display:block; text-align:right}
+  .wert:nth-of-type(1){grid-area:ist}
+  .wert:nth-of-type(2){grid-area:erw}
+  .wert:nth-of-type(3){grid-area:vor}
+  .wert:nth-of-type(4){grid-area:ueberr}
+  .etikett{display:none}
+  .spaltenkopf{
+    display:grid; grid-template-columns:58px 190px 1fr repeat(4, 92px); gap:0 14px;
+    padding:0 6px 7px; font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:10px; letter-spacing:.11em; text-transform:uppercase; color:var(--leise);
+    border-bottom:1px solid var(--linie); position:sticky; top:44px; z-index:4;
+    background:var(--grund);
+  }
+  .spaltenkopf span:nth-child(n+4){text-align:right}
+  .waehrung-innen{display:inline-flex; gap:7px; align-items:center}
+}
+@media (max-width:719px){ .spaltenkopf{display:none} }
+
+.fuss{
+  margin-top:44px; padding-top:20px; border-top:1px solid var(--linie);
+  font-size:12px; color:var(--leise); line-height:1.65;
+}
+.fuss b{color:var(--gedaempft); font-weight:500}
+.claim{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--akzent); margin-top:14px;
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+<div class="huelle">
+<header class="kopf"><div class="marke">Liberty Brothers</div><h1>Wirtschaftskalender der Woche</h1></header>
+<div class="stand">24.08.&thinsp;–&thinsp;28.08.2026&nbsp;&nbsp;·&nbsp;&nbsp;<b>235</b> Termine&nbsp;&nbsp;·&nbsp;&nbsp;Stand 28.08.2026, 06:08 New Yorker Zeit&nbsp;&nbsp;·&nbsp;&nbsp;alle Zeiten New York</div>
+<div class="legende"><span><span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span> bewegt den Markt</span><span><span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt"></i></span> beachtenswert</span><span><span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span> Nebenwert</span><span><span class="v hoch">grün</span> über der Erwartung</span><span><span class="v runter">rot</span> darunter</span><span><span class="v rev">bernstein</span> Vorwert nachträglich geändert</span></div>
+<div class="tag"><h2>Montag, 24. August 2026</h2><span class="zahl">12</span></div>
+<div class="spaltenkopf"><span>Zeit</span><span>Währung</span><span>Termin</span><span>Ist</span><span>Erwartet</span><span>Zuvor</span><span>Überraschung</span></div>
+<div class="zeile gelaufen">
+<div class="zeit">08:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Manufacturing Sales MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-0.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Chicago Fed National Activity Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-0.08</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.06</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.18</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">09:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR 12-Month BTF Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.832</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.781</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR 3-Month BTF Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.495</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.484</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR 6-Month BTF Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.675</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.608</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">10:50</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR New Car Sales YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">9.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">6.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">11.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+2.8</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">11:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">3-Month Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.715</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.715</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">6-Month Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.79</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.78</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">21:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">RBA Meeting Minutes&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">22:35</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇳🇿 NZD</span></span>
+<span class="name">1-Year Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇳🇿 NZD</span></span>
+<span class="name">3-Month Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.85</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.842</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇳🇿 NZD</span></span>
+<span class="name">6-Month Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.03</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.031</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="tag"><h2>Dienstag, 25. August 2026</h2><span class="zahl">45</span></div>
+<div class="spaltenkopf"><span>Zeit</span><span>Währung</span><span>Termin</span><span>Ist</span><span>Erwartet</span><span>Zuvor</span><span>Überraschung</span></div>
+<div class="zeile gelaufen">
+<div class="zeit">00:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">RBA Jacobs Speech&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">01:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">CB Leading Index&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">116.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">116.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">116.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Coincident Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">118.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">118.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">117.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Coincident Indicator MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Leading Economic Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">116.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">116.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">116.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Leading Index MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">+0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">02:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE GDP Growth Rate QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE GDP Growth Rate YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Gross Domestic Product QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Gross Domestic Product YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">02:45</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Consumer Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">86.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">87</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">86</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">03:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Producer Price Index YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">9.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">5.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+3.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">04:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Ifo Business Climate&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">88.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">87.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">86.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+1.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Ifo Current Conditions&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">88.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">87</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">86.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+1.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Ifo Expectations&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">89.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">87.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">86.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+1.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">05:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE 2-Year Schatz Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.85</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.78</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">08:15</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">ADP Weekly Employment Change  [Nachtrag]&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">9.5K</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">08:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Wholesale Sales MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">-0.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-1.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Building Permits&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">1.433</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1.443</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.374</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.01</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Building Permits MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">4.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-2.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">08:55</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Redbook YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">9.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">7.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">09:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">House Price Index&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">442.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">442.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">442.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">House Price Index MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">House Price Index YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">2.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">S&amp;P/Case-Shiller Home Price MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">S&amp;P/Case-Shiller Home Price YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">2.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">10:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CB Consumer Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">89.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">90.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">90.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.8</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">New Home Sales&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.607</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.62</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.678</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.01</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Richmond Fed Manufacturing Index&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">4.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Richmond Fed Manufacturing Shipments Index&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">11.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Richmond Fed Services Index&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-8.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">13:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">2-Year Note Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.315</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">M2 Money Supply MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">23.22</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">23.15</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Money Supply&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">23.22</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">23.15</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">18:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">API Crude Oil Stock Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">4.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.328</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+2.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">21:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Leading Index MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Westpac Leading Index MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">21:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">CPI&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">103.07</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">102.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">102.03</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.37</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Construction Work Done QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-2.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-2.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Inflation Rate MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Median CPI MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Median CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">RBA Trimmed Mean CPI MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">RBA Trimmed Mean CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="tag"><h2>Mittwoch, 26. August 2026</h2><span class="zahl">57</span></div>
+<div class="spaltenkopf"><span>Zeit</span><span>Währung</span><span>Termin</span><span>Ist</span><span>Erwartet</span><span>Zuvor</span><span>Überraschung</span></div>
+<div class="zeile gelaufen">
+<div class="zeit">04:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇭 CHF</span></span>
+<span class="name">Economic Sentiment Index&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">12.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">10</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+4.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇭 CHF</span></span>
+<span class="name">ZEW Expectations&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">12.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">10</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">05:10</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT 2-Year BTP Short Term Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.02</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.92</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">05:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE 15-Year Bund Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.29</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">06:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇬🇧 GBP</span></span>
+<span class="name">CBI Distributive Trades&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-48.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-24</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-26</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-24</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">06:10</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ECB Cipollone Speech&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span>&nbsp;<span class="rede">Stimme der Bank</span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">07:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">MBA 30-Year Mortgage Rate&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">6.78</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6.77</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">MBA Mortgage Applications&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-1.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">MBA Mortgage Market Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">245.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">247.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">MBA Mortgage Refinance Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">740.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">755.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">MBA Purchase Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">154.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">154.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">08:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Core PCE Price Index MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Core PCE Price Index YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Core PCE Prices QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Corporate Profits QoQ&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">8.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+7.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Durable Goods Orders Ex Defense MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+1.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Durable Goods Orders Ex Transp MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Durable Goods Orders MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">GDP Growth Rate QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">1.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">GDP Price Index QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">6.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">6.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">GDP Sales QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Gross Domestic Product QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">1.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Non Defense Goods Orders Ex Air&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">PCE Price Index MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">PCE Price Index YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">PCE Prices QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">5.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">5.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Personal Income MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Personal Spending MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Real Consumer Spending QoQ&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">10:10</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Atlanta Fed GDPNow&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">4.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">10:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Bundesbank Balz Speech&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Crude Oil Imports&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-0.161</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-1.754</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Crude Oil Stocks Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.095</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.405</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.51</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Cushing Crude Oil Stocks Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">1.176</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-1.314</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Distillate Fuel Production Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-0.091</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.054</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Distillate Stocks Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-2.228</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-1.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-1.53</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.63</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Gasoline Production Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.061</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.143</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Gasoline Stocks Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-2.536</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-0.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.688</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1.84</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Heating Oil Stocks Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.027</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.537</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Refinery Crude Runs Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-0.002</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.216</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Weekly Refinery Utilization Rates WoW&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">11:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">17-Week Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.75</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.75</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">2-Year FRN Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.055</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.05</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">11:45</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Fed Barkin Speech&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span>&nbsp;<span class="rede">Testballon-Kandidat</span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">12:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">10-Year Bond Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.707</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.653</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">13:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">5-Year Note Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">4.393</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.408</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">19:01</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇬🇧 GBP</span></span>
+<span class="name">Car Production YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-10.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-1.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-11.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">19:50</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Foreign Bond Investment&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-1978.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1137.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Stock Investment by Foreigners&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-764.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">622.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">20:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">RBA Payments System Board Meeting&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">21:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Capital Expenditure MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-3.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Capital Expenditure QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-3.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-1.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1.8</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Household Spending MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">Household Spending YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">7.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+2.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">RBA Bulletin&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇳 CNY</span></span>
+<span class="name">Industrial Profits YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">17.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">16</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">18.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+1.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">BoJ Himino Speech&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="tag"><h2>Donnerstag, 27. August 2026</h2><span class="zahl">40</span></div>
+<div class="spaltenkopf"><span>Zeit</span><span>Währung</span><span>Termin</span><span>Ist</span><span>Erwartet</span><span>Zuvor</span><span>Überraschung</span></div>
+<div class="zeile gelaufen">
+<div class="zeit">02:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Consumer Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">-26.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-29.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-29.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">02:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇭 CHF</span></span>
+<span class="name">Employment Level&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">5.698</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">5.537</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇭 CHF</span></span>
+<span class="name">Non Farm Payrolls&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">5.698</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">5.55</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">5.65</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.15</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">02:45</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Producer Price Index MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Producer Price Index YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">04:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Loans to Companies YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">4.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Loans to Households YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">M3 Money Supply&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">17614.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">17610.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">M3 Money Supply YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Private sector loans YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">05:10</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT 6-Month BOT Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.472</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.567</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">06:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Jobseekers Total&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3143.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3131.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3121.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+11.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Unemployment Benefit Claims&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">21.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">10</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">5.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+11.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">07:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ECB Monetary Policy Meeting Accounts&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">08:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Average Weekly Earnings&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">3.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Current Account&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">8.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-8.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+10.8</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Continuing Jobless Claims&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">1778.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1790</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1796</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-12</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Goods Trade Balance&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-118.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-99</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-101.41</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-19.8</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Goods Trade Balance Adv&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-118.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-99</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-101.41</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-19.8</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Initial Jobless Claims&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">203.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">208</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">207</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Jobless Claims 4-Week Average&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">205.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">203</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">204.25</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+2.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Retail Inventories Ex Autos MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Wholesale Inventories MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+1.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">10:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">EIA Natural Gas Stocks Change&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">15.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">20</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">16</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">11:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Kansas Fed Composite Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">10.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Kansas Fed Manufacturing Index&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">17.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">14</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">17</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">11:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">4-Week Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.65</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.64</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">8-Week Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.67</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.655</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">12:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">15-Year Mortgage Rate&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">5.98</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">5.95</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">30-Year Mortgage Rate&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">6.66</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6.65</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">13:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">7-Year Note Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">4.512</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.473</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">16:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Fed Balance Sheet&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">6.731</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6.746</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">19:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">CPI MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">1.9</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Core CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">1.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Jobs/applications ratio&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">1.18</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">1.19</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.18</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.01</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Unemployment Rate&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">2.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">20:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇳 CNY</span></span>
+<span class="name">National People&#x27;s Congress&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">23:35</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">2-Year JGB Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">1.708</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.483</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">3-Month Bill Auction&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">1.079</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.082</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="tag"><h2>Freitag, 28. August 2026</h2><span class="zahl">81</span></div>
+<div class="spaltenkopf"><span>Zeit</span><span>Währung</span><span>Termin</span><span>Ist</span><span>Erwartet</span><span>Zuvor</span><span>Überraschung</span></div>
+<div class="zeile gelaufen">
+<div class="zeit">01:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Construction Orders YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Consumer Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">35</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">34.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">Housing Starts YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">22</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">18.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">02:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Import Prices MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Import Prices YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">6.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">7.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">02:45</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR CPI MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Consumer Spending MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR GDP Growth Rate QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR GDP Growth Rate YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Gross Domestic Product QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Gross Domestic Product YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.7</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR HICP MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">0.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR HICP YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Harmonised Inflation Rate MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Harmonised Inflation Rate YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">2.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Household Consumption MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Inflation Rate MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">FR Inflation Rate YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">2.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">03:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇭 CHF</span></span>
+<span class="name">KOF Leading Indicators&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">106.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">103.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">104.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+3.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES CPI MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">4.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Core CPI YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">2.9</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Core Inflation Rate YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">2.9</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.9</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES HICP MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES HICP YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">4.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Harmonised Inflation Rate MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">0.6</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Harmonised Inflation Rate YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">4.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Inflation Rate MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">0.7</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Inflation Rate YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">4.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Retail Sales MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-0.9</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Retail Sales YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-0.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1.2</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">03:55</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Employment Change&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">4.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Unemployed Persons&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">2.996</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">2.993</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Unemployment Change&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">DE Unemployment Rate&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">6.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">6.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">6.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">04:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT Industrial Sales MoM&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-1.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-0.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.7</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT Industrial Sales YoY&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">3.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">5.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-1.4</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">05:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Business Climate&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-0.23</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.19</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Consumer Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">-15.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-15.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-15.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">0</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Consumer Inflation Expectation&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">33.0</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">36</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">30.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-3</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Economic Sentiment&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">98.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">97.5</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">97.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.9</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT Business Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">89.9</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">90</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">89.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT Consumer Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">94.5</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">95</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">94.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.5</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Industrial Sentiment&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">-5.3</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-5.2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-6.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-0.1</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Selling Price Expectations&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v runter">16.4</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">25</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">17.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber runter">-8.6</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">Services Sentiment&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v hoch">5.8</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.9</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">5.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber hoch">+0.9</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit">05:10</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT 10-Year BTP Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">4.1</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile gelaufen">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">IT 5-Year BTP Auction&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v">3.44</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">3.39</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile jetzt">
+<div class="zeit">06:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ES Business Confidence&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">-3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-2.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">08:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">GDP Growth Annualized&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">GDP Growth Rate QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.8</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">0</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">GDP Implicit Price QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.6</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">1.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Gross Domestic Product MoM&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">0.1</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Gross Domestic Product QoQ&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">3.4</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Gross Domestic Product YoY&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.05</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">09:45</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Chicago PMI&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">57</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">57.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">10:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Michigan 1 Year Inflation Expectations&nbsp;<span class="punkte"><i class="punkt an"></i><i class="punkt an"></i><i class="punkt an"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">4.3</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">4.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">10:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇬🇧 GBP</span></span>
+<span class="name">BoE Mann Speech&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span>&nbsp;<span class="rede">Testballon-Kandidat</span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">11:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">Budget Balance&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v">2</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-1.05</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">11:55</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">ECB Schnabel Speech&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span>&nbsp;<span class="rede">Stimme der Bank</span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">13:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Baker Hughes Oil Rig Count&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">452</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">15:30</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇦🇺 AUD</span></span>
+<span class="name">CFTC AUD speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-44.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇦 CAD</span></span>
+<span class="name">CFTC CAD speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-158.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇨🇭 CHF</span></span>
+<span class="name">CFTC CHF speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-27.3</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇪🇺 EUR</span></span>
+<span class="name">CFTC EUR speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-59.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇬🇧 GBP</span></span>
+<span class="name">CFTC GBP speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-54.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇯🇵 JPY</span></span>
+<span class="name">CFTC JPY speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-52.9</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇳🇿 NZD</span></span>
+<span class="name">CFTC NZD speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-32.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Aluminium Speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-0.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Copper Speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">79.7</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Corn speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">302.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Crude Oil speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">122.1</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Gold Speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">222.2</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Nasdaq 100 speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-10.4</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Natural Gas speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-203.5</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC S&amp;P 500 speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-10.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Silver Speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">23.6</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Soybeans speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">191</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit"></div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">CFTC Wheat speculative net positions&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v">-18.8</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<div class="zeile">
+<div class="zeit">20:00</div>
+<div class="terminkopf">
+<span class="waehrung"><span class="waehrung-innen">🇺🇸 USD</span></span>
+<span class="name">Jackson Hole Symposium&nbsp;<span class="punkte"><i class="punkt"></i><i class="punkt"></i><i class="punkt"></i></span></span>
+</div>
+<div class="werte">
+<span class="wert"><span class="etikett">Ist</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Erw</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Zuvor</span><span class="v leer">–</span></span>
+<span class="wert"><span class="etikett">Überr</span><span class="ueber neutral">–</span></span>
+</div></div>
+<footer class="fuss">
+<b>Wie zu lesen:</b> Die Punkte zeigen, wie stark ein Termin den Markt erfahrungsgemäß bewegt. Die Einstufung ist unsere eigene, nicht die eines Datenanbieters. <b>Überraschung</b> ist der tatsächliche Wert minus der Erwartung. Ein bernsteinfarbener Vorwert wurde nach der Erstmeldung nachträglich geändert, was in der ersten Schlagzeile fast nie steht.<br><br>Alle Zeiten in New Yorker Zeit. Keine Anlageberatung.
+<div class="claim">Invest smart, live free.</div>
+</footer></div>
+</body>
+</html>
